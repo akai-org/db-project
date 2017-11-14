@@ -1,10 +1,31 @@
 # DbProject
 
-To start your Phoenix server:
+## Installation
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  * Start Phoenix endpoint with `mix phx.server`
+* Install [Erlang](http://www.erlang.org/downloads) and then [Elixir](https://elixir-lang.org/install.html).
+* Install Phoenix `mix archive.install https://github.com/phoenixframework/archives/raw/master/phx_new.ez`
+* Install [MySQL](https://dev.mysql.com/doc/refman/5.7/en/installing.html).
+* Clone repository.
+* Create file `dev.secret.exs` in `config/` directory.
+* Fill that file with this template:
+
+```elixir
+use Mix.Config
+
+# Configure your database
+config :db_project, DbProject.Repo,
+  adapter: Ecto.Adapters.MySQL,
+  username: "root",
+  password: "password",
+  database: "db_project_dev",
+  hostname: "localhost",
+  pool_size: 10
+```
+
+* Create database with name given in config file.
+* Install dependencies with `mix deps.get`
+* Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+* Now you can start Phoenix endpoint with `mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 

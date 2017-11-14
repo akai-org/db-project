@@ -48,6 +48,8 @@ config :logger, :console, format: "[$level] $message\n"
 config :phoenix, :stacktrace_depth, 20
 
 # Put this in dev.secret.exs
+# use Mix.Config
+# 
 # config :db_project, DbProject.Repo,
 #   adapter: Ecto.Adapters.MySQL,
 #   username: "root",
