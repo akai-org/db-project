@@ -1,8 +1,20 @@
-defmodule DbProject.Events.Scripts do
+defmodule Mix.Tasks.Events.Script do
+  @shortdoc "Script for helping migrate old db to new one"
+
   @moduledoc """
-  This module allow you to
+  This script allow you to
   - transform CSV file from old db to new one which will be supported by the new system
   - download images from all events
+
+  ## Example
+
+      mix events.script
+
+  or
+
+      mix events.script csv_file_path images_path seed_file_path
+
+  ## Generating CSV file
 
   In order to get CSV file from old database, run following query:
 
@@ -46,21 +58,33 @@ defmodule DbProject.Events.Scripts do
 
   """
 
+  use Mix.Task
+
   @date_field 4
   @thumbnail_field 9
   @photo_field 11
+  @integer_fields [:old_id, :thumbnail_id, :photo_id]
   @fields_names [:old_id, :name, :description, :slug, :date, :location,
     :registration_url, :facebook_url, :thumbnail_id, :thumbnail_url,
     :photo_id, :photo_url
   ]
 
-  @doc """
-  Run script which will:
-    - read from given CSV
-    - download images to given directory
-    - generate seed file
-  """
-  def run(file \\ "events_old.csv", images_path \\ "priv/static/images", seed_file \\ "priv/repo/seeds_events.exs") do
+  @doc false
+  def run(args) do
+    {:ok, _started} = Application.ensure_all_started(:httpoison)
+    case length(args) do
+      3 -> run_script(Enum.fetch!(args, 0), Enum.fetch!(args, 1), Enum.fetch!(args, 2))
+      0 -> run_script()
+      _ -> Mix.raise """
+          Wrong arguments, use:
+            mix events.script
+          or
+            mix events.script csv_file_path images_path seed_file_path
+          """
+    end
+  end
+
+  defp run_script(file \\ "events_old.csv", images_path \\ "priv/static/images", seed_file \\ "priv/repo/seeds_events.exs") do
     IO.puts("Reading from CSV file...")
     events = file
     |> read_from_csv
@@ -142,7 +166,7 @@ defmodule DbProject.Events.Scripts do
     event
   end
 
-  defp download("", _images_path), do: :okx
+  defp download("", _images_path), do: :ok
   defp download(url, images_path) do
     with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <- HTTPoison.get(url, [], [ ssl: [{:versions, [:'tlsv1.2']}] ]),
          %URI{path: path} <- URI.parse(url)
@@ -167,17 +191,24 @@ defmodule DbProject.Events.Scripts do
   end
 
   defp convert_to_seed(event) do
-    event = Enum.map(event, &prepare_string(&1))
     event = Enum.zip(@fields_names, event)
+      |> Enum.map(fn ({field, value}) -> prepare_field(field, value) end)
       |> Enum.map(fn ({field, value}) ->
         Atom.to_string(field) <> ": " <> value
       end)
       |> Enum.join(", ")
 
-    ~s[DbProject.Repo.insert!(%DbProject.Event{#{event}})\n]
+    ~s[DbProject.Repo.insert!(%DbProject.Events.Event{author_id: 0, #{event}})\n]
   end
 
-  defp prepare_string(string) do
-    ~s(~s|#{string}|)
+  defp prepare_field(field, ""), do: {field, "nil"}
+  defp prepare_field(field, value) do
+    value =
+      cond do
+        Enum.member?(@integer_fields, field) -> {_number, ""} = Integer.parse(value); value
+        field == :date                       -> ~s[NaiveDateTime.from_iso8601!("#{value}")]
+        true                                 -> ~s(~s|#{value}|)
+      end
+    {field, value}
   end
 end
