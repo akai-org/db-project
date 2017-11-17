@@ -51,7 +51,8 @@ defmodule DbProject.Mixfile do
       {:cowboy, "~> 1.0"},
       {:ex_doc, "~> 0.16", only: :dev, runtime: false},
       {:csv, "~> 2.0.0", only: :dev, runtime: false},
-      {:httpoison, "~> 0.13", only: :dev}
+      {:httpoison, "~> 0.13", only: :dev},
+      {:distillery, "~> 1.5", runtime: false}
     ]
   end
 
