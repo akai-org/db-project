@@ -49,6 +49,10 @@ defmodule DbProject.Events.Scripts do
   @date_field 4
   @thumbnail_field 9
   @photo_field 11
+  @fields_names [:old_id, :name, :description, :slug, :date, :location,
+    :registration_url, :facebook_url, :thumbnail_id, :thumbnail_url,
+    :photo_id, :photo_url
+  ]
 
   @doc """
   Run script which will:
@@ -57,10 +61,14 @@ defmodule DbProject.Events.Scripts do
     - generate seed file
   """
   def run(file \\ "events_old.csv", images_path \\ "priv/static/images", seed_file \\ "priv/repo/seeds_events.exs") do
-    file
+    events = file
     |> read_from_csv
     |> Enum.map(&process_event(&1))
-    |> Enum.each(&download_images(&1, images_path))
+
+    events |> Enum.each(&download_images(&1, images_path))
+    events |> make_seed(seed_file)
+
+    :ok
   end
 
   defp read_from_csv(file) do
@@ -124,7 +132,7 @@ defmodule DbProject.Events.Scripts do
     event
   end
 
-  defp download("", _images_path), do: :ok
+  defp download("", _images_path), do: :okx
   defp download(url, images_path) do
     with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <- HTTPoison.get(url, [], [ ssl: [{:versions, [:'tlsv1.2']}] ]),
          %URI{path: path} <- URI.parse(url)
@@ -138,5 +146,28 @@ defmodule DbProject.Events.Scripts do
   defp save(path, body) do
     Path.dirname(path) |> File.mkdir_p!
     File.write!(path, body)
+  end
+
+  defp make_seed(events, seed_file) do
+    output = File.open!(seed_file, [:write, :utf8])
+    events
+    |> Enum.map(&convert_to_seed(&1))
+    |> Enum.each(&IO.write(output, &1))
+    :ok
+  end
+
+  defp convert_to_seed(event) do
+    event = Enum.map(event, &prepare_string(&1))
+    event = Enum.zip(@fields_names, event)
+      |> Enum.map(fn ({field, value}) ->
+        Atom.to_string(field) <> ": " <> value
+      end)
+      |> Enum.join(", ")
+
+    ~s[DbProject.Repo.insert!(%DbProject.Event{#{event}})\n]
+  end
+
+  defp prepare_string(string) do
+    ~s(~s|#{string}|)
   end
 end
