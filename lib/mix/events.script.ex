@@ -1,8 +1,20 @@
-defmodule DbProject.Events.Scripts do
+defmodule Mix.Tasks.Events.Script do
+  @shortdoc "Script for helping migrate old db to new one"
+
   @moduledoc """
-  This module allow you to
+  This script allow you to
   - transform CSV file from old db to new one which will be supported by the new system
   - download images from all events
+
+  ## Example
+
+      mix events.script
+
+  or
+
+      mix events.script csv_file_path images_path seed_file_path
+
+  ## Generating CSV file
 
   In order to get CSV file from old database, run following query:
 
@@ -46,6 +58,8 @@ defmodule DbProject.Events.Scripts do
 
   """
 
+  use Mix.Task
+
   @date_field 4
   @thumbnail_field 9
   @photo_field 11
@@ -55,13 +69,22 @@ defmodule DbProject.Events.Scripts do
     :photo_id, :photo_url
   ]
 
-  @doc """
-  Run script which will:
-    - read from given CSV
-    - download images to given directory
-    - generate seed file
-  """
-  def run(file \\ "events_old.csv", images_path \\ "priv/static/images", seed_file \\ "priv/repo/seeds_events.exs") do
+  @doc false
+  def run(args) do
+    {:ok, _started} = Application.ensure_all_started(:httpoison)
+    case length(args) do
+      3 -> run_script(Enum.fetch!(args, 0), Enum.fetch!(args, 1), Enum.fetch!(args, 2))
+      0 -> run_script()
+      _ -> Mix.raise """
+          Wrong arguments, use:
+            mix events.script
+          or
+            mix events.script csv_file_path images_path seed_file_path
+          """
+    end
+  end
+
+  defp run_script(file \\ "events_old.csv", images_path \\ "priv/static/images", seed_file \\ "priv/repo/seeds_events.exs") do
     IO.puts("Reading from CSV file...")
     events = file
     |> read_from_csv
