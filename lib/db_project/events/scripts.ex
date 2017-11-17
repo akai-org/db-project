@@ -49,6 +49,7 @@ defmodule DbProject.Events.Scripts do
   @date_field 4
   @thumbnail_field 9
   @photo_field 11
+  @integer_fields [:old_id, :thumbnail_id, :photo_id]
   @fields_names [:old_id, :name, :description, :slug, :date, :location,
     :registration_url, :facebook_url, :thumbnail_id, :thumbnail_url,
     :photo_id, :photo_url
@@ -142,7 +143,7 @@ defmodule DbProject.Events.Scripts do
     event
   end
 
-  defp download("", _images_path), do: :okx
+  defp download("", _images_path), do: :ok
   defp download(url, images_path) do
     with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <- HTTPoison.get(url, [], [ ssl: [{:versions, [:'tlsv1.2']}] ]),
          %URI{path: path} <- URI.parse(url)
@@ -167,17 +168,24 @@ defmodule DbProject.Events.Scripts do
   end
 
   defp convert_to_seed(event) do
-    event = Enum.map(event, &prepare_string(&1))
     event = Enum.zip(@fields_names, event)
+      |> Enum.map(fn ({field, value}) -> prepare_field(field, value) end)
       |> Enum.map(fn ({field, value}) ->
         Atom.to_string(field) <> ": " <> value
       end)
       |> Enum.join(", ")
 
-    ~s[DbProject.Repo.insert!(%DbProject.Event{#{event}})\n]
+    ~s[DbProject.Repo.insert!(%DbProject.Events.Event{author_id: 0, #{event}})\n]
   end
 
-  defp prepare_string(string) do
-    ~s(~s|#{string}|)
+  defp prepare_field(field, ""), do: {field, "nil"}
+  defp prepare_field(field, value) do
+    value =
+      cond do
+        Enum.member?(@integer_fields, field) -> {_number, ""} = Integer.parse(value); value
+        field == :date                       -> ~s[NaiveDateTime.from_iso8601!("#{value}")]
+        true                                 -> ~s(~s|#{value}|)
+      end
+    {field, value}
   end
 end
