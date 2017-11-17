@@ -61,13 +61,23 @@ defmodule DbProject.Events.Scripts do
     - generate seed file
   """
   def run(file \\ "events_old.csv", images_path \\ "priv/static/images", seed_file \\ "priv/repo/seeds_events.exs") do
+    IO.puts("Reading from CSV file...")
     events = file
     |> read_from_csv
     |> Enum.map(&process_event(&1))
+    IO.puts("Done!")
 
-    events |> Enum.each(&download_images(&1, images_path))
+    IO.puts("Downloading images...")
+    download_tasks = events |> Enum.map(fn event ->
+        Task.async(fn -> download_images(event, images_path) end)
+      end)
+
+    IO.puts("Generating seed file...")
     events |> make_seed(seed_file)
+    IO.puts("Done! - seed file is ready")
 
+    download_tasks |> Enum.each(&Task.await(&1))
+    IO.puts("Done! - images are downloaded")
     :ok
   end
 
