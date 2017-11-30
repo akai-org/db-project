@@ -17,8 +17,12 @@ defmodule DbProject.Events do
       [%Event{}, ...]
 
   """
-  def list_events do
+  def list_events() do
     Repo.all(Event)
+  end
+
+  def list_events(params) do
+    Repo.paginate(Event, params)
   end
 
   @doc """

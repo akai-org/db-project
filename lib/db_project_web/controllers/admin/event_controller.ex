@@ -6,8 +6,8 @@ defmodule DbProjectWeb.Admin.EventController do
 
   plug DbProjectWeb.RequireLogin
 
-  def index(conn, _params) do
-    events = Events.list_events()
+  def index(conn, params) do
+    events = Events.list_events(params)
     render(conn, "index.html", events: events)
   end
 

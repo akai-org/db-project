@@ -55,7 +55,9 @@ defmodule DbProject.Mixfile do
       {:distillery, "~> 1.5", runtime: false},
       {:conform, "~> 2.2"},
       {:ueberauth, "~> 0.4"},
-      {:ueberauth_google, "~> 0.7"}
+      {:ueberauth_google, "~> 0.7"},
+      {:scrivener_ecto, "~> 1.0"},
+      {:scrivener_html, "~> 1.7"}
     ]
   end
 

@@ -31,6 +31,10 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
   client_id: System.get_env("GOOGLE_CLIENT_ID"),
   client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
 
+config :scrivener_html,
+  routes_helper: DbProjectWeb.Router.Helpers,
+  # If you use a single view style everywhere, you can configure it here. See View Styles below for more info.
+  view_style: :bootstrap
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"

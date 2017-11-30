@@ -6,6 +6,11 @@ defmodule DbProjectWeb.EventController do
 
   action_fallback DbProjectWeb.FallbackController
 
+  def index(conn, %{"page" => _} = params) do
+    events = Events.list_events(params)
+    render(conn, "index.json", events: events)
+  end
+
   def index(conn, _params) do
     events = Events.list_events()
     render(conn, "index.json", events: events)
