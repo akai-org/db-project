@@ -40,6 +40,6 @@ defmodule DbProjectWeb.Router do
   scope "/admin", DbProjectWeb, as: :admin do
     pipe_through :browser
 
-    resources "/events", Admin.EventController, only: [:show, :index, :edit, :update]
+    resources "/events", Admin.EventController
   end
 end

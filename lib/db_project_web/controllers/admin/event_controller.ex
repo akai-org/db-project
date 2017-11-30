@@ -11,6 +11,25 @@ defmodule DbProjectWeb.Admin.EventController do
     render(conn, "index.html", events: events)
   end
 
+  def new(conn, _params) do
+    changeset = Event.changeset(%Event{}, %{})
+    render(conn, "new.html", changeset: changeset)
+  end
+
+  def create(conn, %{"event" => event_params}) do
+    case Events.create_event(event_params) do
+      {:ok, %Event{} = event} ->
+        conn
+        |> put_flash(:info, "Created event")
+        |> redirect(to: admin_event_path(conn, :show, event.id))
+      {:error, %Ecto.Changeset{} = changeset} ->
+        IO.inspect(changeset.errors)
+        conn
+        |> put_flash(:error, "Oops! There were errors on the form.")
+        |> render("new.html", changeset: changeset)
+    end
+  end
+
   def show(conn, %{"id" => id}) do
     event = Events.get_event!(id)
     render(conn, "show.html", event: event)
@@ -24,10 +43,12 @@ defmodule DbProjectWeb.Admin.EventController do
 
   def update(conn, %{"id" => id, "event" => event_params}) do
     event = Events.get_event!(id)
-
+    IO.inspect(event_params)
     case Events.update_event(event, event_params) do
       {:ok, event} ->
-        render(conn, "show.html", event: event)
+        conn
+        |> put_flash(:info, "Updated")
+        |> render("show.html", event: event)
       {:error, changeset} ->
         conn
         |> put_flash(:error, "Oops! There were errors on the form.")

@@ -1,3 +1,18 @@
-<%= for event <- @events do %>
-  <%= event.name %><br>
-<% end %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nazwa</th>
+      <th>Slug</th>
+      <th>Data</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for event <- @events do %>
+      <tr>
+        <td><%= event.name %></td>
+        <td><%= event.slug %></td>
+        <td><%= event.date %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>
