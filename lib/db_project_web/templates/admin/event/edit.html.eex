@@ -1,0 +1,6 @@
+<%= form_for @changeset, admin_event_path(@conn, :update, @event.id), fn f -> %>
+  <label>
+    Name: <%= text_input f, :name %>
+  </label>
+  <%= submit "Submit" %>
+<% end %>

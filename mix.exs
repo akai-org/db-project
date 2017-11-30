@@ -53,7 +53,9 @@ defmodule DbProject.Mixfile do
       {:csv, "~> 2.0.0", runtime: false},
       {:httpoison, "~> 0.13", runtime: false},
       {:distillery, "~> 1.5", runtime: false},
-      {:conform, "~> 2.2"}
+      {:conform, "~> 2.2"},
+      {:ueberauth, "~> 0.4"},
+      {:ueberauth_google, "~> 0.7"}
     ]
   end
 
