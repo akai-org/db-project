@@ -21,22 +21,15 @@ use Mix.Releases.Config,
 # when building in that environment, this combination of release
 # and environment configuration is called a profile
 
-environment :dev do
-  # If you are running Phoenix, you should make sure that
-  # server: true is set and the code reloader is disabled,
-  # even in dev mode.
-  # It is recommended that you build with MIX_ENV=prod and pass
-  # the --env flag to Distillery explicitly if you want to use
-  # dev mode.
-  set dev_mode: true
-  set include_erts: false
-  set cookie: :"l;UHY/DJ1D|/lBJ)oA33/%)G0iW?rlz&0?7p<h07|HTIY=5mNG=L!%`u_w~I|I5U"
-end
-
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: :"k*Cb5KWwY|zrV,@f.kK(pk3eE83/cuA8g,p(E@w!XL|&7r<JV:U_R;V3}|9b1u5}"
+  set cookie: System.get_env("DBPROJECT_ERLANG_COOKIE")
+  set commands: [
+    "migrate": "rel/commands/migrate.sh",
+    "seed": "rel/commands/seed.sh",
+    "create": "rel/commands/create.sh"
+  ]
 end
 
 # You may define one or more releases in this file.
@@ -45,9 +38,10 @@ end
 # will be used by default
 
 release :db_project do
+  plugin DbProject.PhoenixDigestTask
+  plugin Conform.ReleasePlugin
   set version: current_version(:db_project)
   set applications: [
     :runtime_tools
   ]
 end
-
