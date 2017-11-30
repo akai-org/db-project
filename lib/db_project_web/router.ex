@@ -13,16 +13,23 @@ defmodule DbProjectWeb.Router do
     plug :accepts, ["json"]
   end
 
-  # scope "/", DbProjectWeb do
-  #   pipe_through :browser # Use the default browser stack
-  #
-  #   get "/", PageController, :index
-  # end
+  scope "/", DbProjectWeb do
+    pipe_through :browser # Use the default browser stack
+
+    get "/", PageController, :index
+  end
 
   # Other scopes may use custom stacks.
   scope "/api", DbProjectWeb do
     pipe_through :api
 
     resources "/events", EventController, only: [:index, :show]
+  end
+
+  scope "/auth", DbProjectWeb do
+    pipe_through :browser
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
   end
 end
