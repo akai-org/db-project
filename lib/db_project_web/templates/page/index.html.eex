@@ -1,1 +1,5 @@
-<a href="<%= auth_path @conn, :request, "google" %>" class="btn btn-primary">Login</a>
+<%= if !is_logged?(@conn) do
+  link("Login", to: auth_path(@conn, :login), method: :post, class: "btn btn-primary")
+else
+  link("Logout", to: auth_path(@conn, :logout), method: :delete, class: "btn btn-danger")
+end %>

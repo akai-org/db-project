@@ -40,6 +40,8 @@ defmodule DbProjectWeb do
       import DbProjectWeb.Router.Helpers
       import DbProjectWeb.ErrorHelpers
       import DbProjectWeb.Gettext
+
+      import DbProjectWeb.View.Helpers
     end
   end
 

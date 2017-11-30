@@ -7,6 +7,7 @@ defmodule DbProjectWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug DbProjectWeb.Auth
   end
 
   pipeline :api do
@@ -17,7 +18,6 @@ defmodule DbProjectWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    get "/admin", PageController, :admin
   end
 
   # Other scopes may use custom stacks.
@@ -30,7 +30,16 @@ defmodule DbProjectWeb.Router do
   scope "/auth", DbProjectWeb do
     pipe_through :browser
 
+    post "/", AuthController, :login
+    delete "/logout", AuthController, :logout
+
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
+  end
+
+  scope "/admin", DbProjectWeb, as: :admin do
+    pipe_through :browser
+
+    resources "/events", Admin.EventController, only: [:show, :index, :edit, :update]
   end
 end

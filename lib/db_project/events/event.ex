@@ -26,6 +26,6 @@ defmodule DbProject.Events.Event do
   def changeset(%Event{} = event, attrs) do
     event
     |> cast(attrs, [:name, :description, :slug, :date, :location, :author_id, :registration_url, :facebook_url, :thumbnail_id, :thumbnail_url, :photo_id, :photo_url, :old_id])
-    |> validate_required([:name, :description, :slug, :date, :location, :author_id, :registration_url, :facebook_url, :thumbnail_id, :thumbnail_url, :photo_id, :photo_url, :old_id])
+    |> validate_required([:name, :description, :slug])
   end
 end

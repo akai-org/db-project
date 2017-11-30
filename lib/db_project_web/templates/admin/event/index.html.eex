@@ -1,0 +1,3 @@
+<%= for event <- @events do %>
+  <%= event.name %><br>
+<% end %>

@@ -1,4 +1,4 @@
-defmodule DbProject.Accounts.RequireLogin do
+defmodule DbProjectWeb.RequireLogin do
   import Plug.Conn
   import DbProjectWeb.Router.Helpers
   import Phoenix.Controller
@@ -10,9 +10,9 @@ defmodule DbProject.Accounts.RequireLogin do
   end
 
   def call(conn, _options) do
-    current_user = get_session(conn, :current_user)
+    current_user = conn.assigns.current_user
     case current_user do
-      %User{} -> assign(conn, :current_user, current_user)
+      %User{} -> conn
       _       -> conn
                 |> put_flash(:error, "Musisz sie zalogowac")
                 |> redirect(to: page_path(conn, :index))
