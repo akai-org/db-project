@@ -6,17 +6,23 @@ defmodule DbProjectWeb.EventController do
 
   action_fallback DbProjectWeb.FallbackController
 
-  def index(conn, %{"page" => _} = params) do
-    events = Events.list_events(params)
+  def index(conn, params) do
+    if params == %{}, do: params = %{"all" => "true"}
 
-    conn
-    |> Scrivener.Headers.paginate(events)
-    |> render("index.json", events: events)
-  end
+    case params do
+      %{"all" => "true"} ->
+        events = Events.list_events(%{"all" => "true"})
 
-  def index(conn, _params) do
-    events = Events.list_events()
-    render(conn, "index.json", events: events)
+        conn
+        |> render("index.json", events: events)
+
+      _ ->
+        events = Events.list_events(params)
+
+        conn
+        |> Scrivener.Headers.paginate(events)
+        |> render("index.json", events: events)
+    end
   end
 
   def create(conn, %{"event" => event_params}) do

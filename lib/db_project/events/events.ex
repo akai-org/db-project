@@ -17,8 +17,8 @@ defmodule DbProject.Events do
       [%Event{}, ...]
 
   """
-  def list_events() do
-    {_status, events} = Cachex.get(:events_lists_cache, %{}, fallback: fn(_key) ->
+  def list_events(%{"all" => "true"} = params) do
+    {_status, events} = Cachex.get(:events_lists_cache, params, fallback: fn(_key) ->
         Repo.all(Event)
     end)
     events
