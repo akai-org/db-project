@@ -58,7 +58,8 @@ defmodule DbProject.Mixfile do
       {:ueberauth_google, "~> 0.7"},
       {:scrivener_ecto, "~> 1.0"},
       {:scrivener_html, "~> 1.7"},
-      {:scrivener_headers, "~> 3.1"}
+      {:scrivener_headers, "~> 3.1"},
+      {:cachex, "~> 2.1"}
     ]
   end
 

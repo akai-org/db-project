@@ -6,6 +6,7 @@ defmodule DbProject.Application do
   def start(_type, _args) do
     import Supervisor.Spec
 
+    limit = %Cachex.Limit{ limit: 50, reclaim: 0.1 }
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
@@ -14,6 +15,8 @@ defmodule DbProject.Application do
       supervisor(DbProjectWeb.Endpoint, []),
       # Start your own worker by calling: DbProject.Worker.start_link(arg1, arg2, arg3)
       # worker(DbProject.Worker, [arg1, arg2, arg3]),
+      worker(Cachex, [:events_lists_cache, [limit: limit]], id: :cachex_events_lists),
+      worker(Cachex, [:events_units_cache, [limit: limit]], id: :cachex_events_units)
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

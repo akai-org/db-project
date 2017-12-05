@@ -18,11 +18,17 @@ defmodule DbProject.Events do
 
   """
   def list_events() do
-    Repo.all(Event)
+    {_status, events} = Cachex.get(:events_lists_cache, %{}, fallback: fn(_key) ->
+        Repo.all(Event)
+    end)
+    events
   end
 
   def list_events(params) do
-    Repo.paginate(Event, params)
+    {_status, events} = Cachex.get(:events_lists_cache, params, fallback: fn(params) ->
+        Repo.paginate(Event, params)
+    end)
+    events
   end
 
   @doc """
@@ -39,8 +45,12 @@ defmodule DbProject.Events do
       ** (Ecto.NoResultsError)
 
   """
-  def get_event!(id), do: Repo.get!(Event, id)
-
+  def get_event!(id) do
+    {_status, events} = Cachex.get(:events_units_cache, id, fallback: fn(id) ->
+        Repo.get!(Event, id)
+    end)
+    events
+  end
   @doc """
   Creates a event.
 
@@ -54,6 +64,8 @@ defmodule DbProject.Events do
 
   """
   def create_event(attrs \\ %{}) do
+    Cachex.clear(:events_lists_cache)
+
     %Event{}
     |> Event.changeset(attrs)
     |> Repo.insert()
@@ -72,6 +84,9 @@ defmodule DbProject.Events do
 
   """
   def update_event(%Event{} = event, attrs) do
+    Cachex.del(:events_units_cache, Integer.to_string(event.id), async: true)
+    Cachex.clear(:events_lists_cache)
+
     event
     |> Event.changeset(attrs)
     |> Repo.update()
@@ -90,6 +105,9 @@ defmodule DbProject.Events do
 
   """
   def delete_event(%Event{} = event) do
+    Cachex.del(:events_units_cache, Integer.to_string(event.id), async: true)
+    Cachex.clear(:events_lists_cache)
+
     Repo.delete(event)
   end
 
