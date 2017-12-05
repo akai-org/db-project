@@ -8,7 +8,10 @@ defmodule DbProjectWeb.EventController do
 
   def index(conn, %{"page" => _} = params) do
     events = Events.list_events(params)
-    render(conn, "index.json", events: events)
+
+    conn
+    |> Scrivener.Headers.paginate(events)
+    |> render("index.json", events: events)
   end
 
   def index(conn, _params) do
