@@ -3,7 +3,8 @@ defmodule DbProject.Events.Event do
   import Ecto.Changeset
   alias DbProject.Events.Event
 
-
+  # https://github.com/phoenixframework/phoenix/issues/2152#issuecomment-335152560
+  @timestamps_opts [type: Ecto.DateTime, usec: false]
   schema "events" do
     field :author_id, :integer
     field :date, :naive_datetime

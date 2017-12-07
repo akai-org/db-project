@@ -17,6 +17,7 @@ defmodule DbProject.Events do
       [%Event{}, ...]
 
   """
+  def list_events(params \\ %{"all" => "true"})
   def list_events(%{"all" => "true"} = params) do
     {_status, events} = Cachex.get(:events_lists_cache, params, fallback: fn(_key) ->
         Repo.all(Event)
@@ -46,10 +47,10 @@ defmodule DbProject.Events do
 
   """
   def get_event!(id) do
-    {_status, events} = Cachex.get(:events_units_cache, id, fallback: fn(id) ->
+    {_status, event} = Cachex.get(:events_units_cache, id, fallback: fn(id) ->
         Repo.get!(Event, id)
     end)
-    events
+    event
   end
   @doc """
   Creates a event.
@@ -64,11 +65,18 @@ defmodule DbProject.Events do
 
   """
   def create_event(attrs \\ %{}) do
-    Cachex.clear(:events_lists_cache)
+    response = %Event{}
+      |> Event.changeset(attrs)
+      |> Repo.insert()
 
-    %Event{}
-    |> Event.changeset(attrs)
-    |> Repo.insert()
+    case response do
+      {:ok, _} ->
+        # Clear cache only when new event is added
+        Cachex.clear(:events_lists_cache)
+        response
+      _ ->
+        response
+    end
   end
 
   @doc """
@@ -84,12 +92,18 @@ defmodule DbProject.Events do
 
   """
   def update_event(%Event{} = event, attrs) do
-    Cachex.del(:events_units_cache, Integer.to_string(event.id), async: true)
-    Cachex.clear(:events_lists_cache)
+    response = event
+      |> Event.changeset(attrs)
+      |> Repo.update()
 
-    event
-    |> Event.changeset(attrs)
-    |> Repo.update()
+    case response do
+      {:ok, _} ->
+        Cachex.del(:events_units_cache, Integer.to_string(event.id))
+        Cachex.clear(:events_lists_cache)
+        response
+      _ ->
+        response
+    end
   end
 
   @doc """
@@ -105,7 +119,7 @@ defmodule DbProject.Events do
 
   """
   def delete_event(%Event{} = event) do
-    Cachex.del(:events_units_cache, Integer.to_string(event.id), async: true)
+    Cachex.del(:events_units_cache, Integer.to_string(event.id))
     Cachex.clear(:events_lists_cache)
 
     Repo.delete(event)
