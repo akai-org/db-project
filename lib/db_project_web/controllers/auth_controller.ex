@@ -16,7 +16,7 @@ defmodule DbProjectWeb.AuthController do
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     with {:ok, %Accounts.User{} = user} <- Accounts.auth_user(auth) do
         conn
-        |> put_session(:current_user, user)
+        |> put_session(:current_user_id, user.id)
         |> put_flash(:info, "Zalogowano")
         |> redirect(to: page_path(conn, :index))
     else
@@ -27,7 +27,7 @@ defmodule DbProjectWeb.AuthController do
 
   def logout(conn, _params) do
     conn
-    |> delete_session(:current_user)
+    |> delete_session(:current_user_id)
     |> put_flash(:info, "Wylogowano")
     |> redirect(to: page_path(conn, :index))
   end

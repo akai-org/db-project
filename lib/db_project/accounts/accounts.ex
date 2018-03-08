@@ -30,7 +30,9 @@ defmodule DbProject.Accounts do
   end
 
   defp get_user_by_email(email) do
-    Repo.get_by(User, email: email)
+    Repo.one(from u in User, 
+      where: u.email == ^email,
+      preload: [:roles])
   end
 
   defp create_user(%{email: email, name: name}) do
@@ -55,6 +57,13 @@ defmodule DbProject.Accounts do
     response = %Role{}
       |> Role.changeset(attrs)
       |> Repo.insert()
+  end
+
+  def has_role(user, role) do
+    role = Atom.to_string(role)
+    Enum.any?(user.roles, fn r ->
+      r.atom == role
+    end)
   end
 
   def get_user!(id) do

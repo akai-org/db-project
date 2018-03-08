@@ -8,6 +8,7 @@ defmodule DbProjectWeb.Admin.UserController do
   alias DbProject.Repo
 
   plug DbProjectWeb.RequireLogin
+  plug DbProjectWeb.RequireRole, role: :role_admin
 
   def index(conn, _params) do
     users = Accounts.list_users()
@@ -24,7 +25,6 @@ defmodule DbProjectWeb.Admin.UserController do
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Accounts.get_user!(id)
-    Accounts.update_user_role(user, user_params)
     case Accounts.update_user_role(user, user_params) do
       {:ok, %User{}} ->
         conn

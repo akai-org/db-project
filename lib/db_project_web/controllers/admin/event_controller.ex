@@ -5,6 +5,7 @@ defmodule DbProjectWeb.Admin.EventController do
   alias DbProject.Events.Event
 
   plug DbProjectWeb.RequireLogin
+  plug DbProjectWeb.RequireRole, role: :event_admin
 
   def index(conn, params) do
     events = Events.list_events(params)
@@ -42,7 +43,6 @@ defmodule DbProjectWeb.Admin.EventController do
 
   def update(conn, %{"id" => id, "event" => event_params}) do
     event = Events.get_event!(id)
-    IO.inspect(event_params)
     case Events.update_event(event, event_params) do
       {:ok, event} ->
         conn
