@@ -1,0 +1,16 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nazwa</th>
+      <th>Atom</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for role <- @roles do %>
+      <tr>
+        <td><%= role.name %></td>
+        <td><%= role.atom %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>

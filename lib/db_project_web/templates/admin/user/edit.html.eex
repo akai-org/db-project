@@ -1,0 +1,13 @@
+<%= form_for @changeset, admin_user_path(@conn, :update, @user.id),
+  [class: "form-group"], fn f -> %>
+
+
+  <div class="form-group">
+    <label>Roles</label>
+    <%= multiple_select(f, :roles, @roles, 
+      selected: Enum.map(@user.roles, &(&1.id)), class: "form-control") %>
+  </div>
+  
+  <%= submit "Submit", class: "btn btn-primary" %>
+
+<%= end %>

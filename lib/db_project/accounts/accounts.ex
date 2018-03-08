@@ -1,6 +1,7 @@
 defmodule DbProject.Accounts do
   import Ecto.Query, warn: false
   alias DbProject.Accounts.User
+  alias DbProject.Accounts.Role
   alias DbProject.Repo
 
   def auth_user(%Ueberauth.Auth{} = auth) do
@@ -36,5 +37,48 @@ defmodule DbProject.Accounts do
     %User{}
     |> User.changeset(%{email: email, name: name})
     |> Repo.insert()
+  end
+
+  def list_users() do
+    Repo.all(User)
+  end
+
+  def list_roles() do
+    Repo.all(Role)
+  end
+
+  def list_roles_for_select() do
+    Repo.all(from r in Role, select: {r.name, r.id})
+  end
+
+  def create_role(attrs \\ %{}) do
+    response = %Role{}
+      |> Role.changeset(attrs)
+      |> Repo.insert()
+  end
+
+  def get_user!(id) do
+    query = from u in User, 
+      where: u.id == ^id,
+      preload: [:roles]
+    Repo.one(query)
+  end
+
+  def update_user_role(%User{} = user, %{"roles" => new_roles_ids} = params) do
+    new_roles_ids = Enum.map(new_roles_ids, &(String.to_integer(&1)))
+
+    roles = load_roles(new_roles_ids)
+
+    user
+    |> Ecto.Changeset.change() 
+    |> Ecto.Changeset.put_assoc(:roles, roles)
+    |> Repo.update()
+  end
+
+  defp load_roles(roles_ids) do
+    case roles_ids do
+      [] -> []
+      ids -> Repo.all(from r in Role, where: r.id in ^ids)
+    end
   end
 end

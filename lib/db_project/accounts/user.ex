@@ -2,12 +2,13 @@ defmodule DbProject.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias DbProject.Accounts.User
-
+  alias DbProject.Accounts.Role
 
   schema "accounts_user" do
     field :email, :string
     field :name, :string
 
+    many_to_many :roles, Role, join_through: "accounts_permissions", on_replace: :delete
     timestamps()
   end
 

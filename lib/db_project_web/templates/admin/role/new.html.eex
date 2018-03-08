@@ -1,0 +1,16 @@
+<%= form_for @changeset, admin_role_path(@conn, :create),
+  [class: "form-group"], fn f -> %>
+
+  <div class="form-group">
+    <label>Nazwa</label>
+    <%= text_input f, :name, class: "form-control" %>
+    <%= error_tag f, :name %>
+  </div>
+
+  <div class="form-group">
+    <label>Atom</label>
+    <%= text_input f, :atom, class: "form-control" %>
+    <%= error_tag f, :atom %>
+  </div>
+  <%= submit "Submit", class: "btn btn-primary" %>
+<% end %>

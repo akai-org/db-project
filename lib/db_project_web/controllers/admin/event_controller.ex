@@ -23,7 +23,6 @@ defmodule DbProjectWeb.Admin.EventController do
         |> put_flash(:info, "Created event")
         |> redirect(to: admin_event_path(conn, :show, event.id))
       {:error, %Ecto.Changeset{} = changeset} ->
-        IO.inspect(changeset.errors)
         conn
         |> put_flash(:error, "Oops! There were errors on the form.")
         |> render("new.html", changeset: changeset)

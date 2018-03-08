@@ -1,0 +1,19 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nazwa</th>
+      <th>Email</th>
+      <th>Edit</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for user <- @users do %>
+      <tr>
+        <td><%= user.name %></td>
+        <td><%= user.email %></td>
+        <td><%= link("Edit", 
+          to: admin_user_path(@conn, :edit, user.id)) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>
