@@ -41,7 +41,7 @@ defmodule DbProjectWeb.Router do
     pipe_through :browser
 
     resources "/events", Admin.EventController
-    resources "/roles", Admin.RoleController, only: [:index, :create, :new]
+    resources "/roles", Admin.RoleController, only: [:index, :create, :new, :delete]
     resources "/user", Admin.UserController, only: [:index, :edit, :update]
   end
 end

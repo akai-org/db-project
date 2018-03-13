@@ -90,4 +90,12 @@ defmodule DbProject.Accounts do
       ids -> Repo.all(from r in Role, where: r.id in ^ids)
     end
   end
+
+  def delete_role(%Role{} = role) do
+    Repo.delete(role)
+  end
+
+  def get_role!(id) do
+    Repo.get!(Role, id)
+  end
 end

@@ -8,7 +8,8 @@ defmodule DbProject.Accounts.Role do
     field :name, :string
     field :atom, :string
 
-    many_to_many :users, User, join_through: "accounts_permissions"
+    many_to_many :users, User, join_through: "accounts_permissions", 
+      on_delete: :delete_all
     timestamps()
   end
 

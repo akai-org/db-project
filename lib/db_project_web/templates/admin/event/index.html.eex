@@ -1,9 +1,13 @@
+<%= link("New event", to: admin_event_path(@conn, :new), class: "btn btn-primary") %>
+
 <table class="table">
   <thead>
     <tr>
       <th>Nazwa</th>
       <th>Slug</th>
       <th>Data</th>
+      <th>Edit</th>  
+      <th>Edit</th>
     </tr>
   </thead>
   <tbody>
@@ -12,6 +16,8 @@
         <td><%= event.name %></td>
         <td><%= event.slug %></td>
         <td><%= event.date %></td>
+        <td><%= link("Edit", to: admin_event_path(@conn, :edit, event.id)) %></td>
+        <td><%= link("Delete", to: admin_event_path(@conn, :delete, event.id), method: :delete) %></td>
       </tr>
     <% end %>
   </tbody>

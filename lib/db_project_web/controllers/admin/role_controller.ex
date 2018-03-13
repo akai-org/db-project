@@ -28,4 +28,18 @@ defmodule DbProjectWeb.Admin.RoleController do
         |> render("new.html", changeset: changeset)
     end
   end
+
+  def delete(conn, %{"id" => id}) do
+    role = Accounts.get_role!(id)
+    case Accounts.delete_role(role) do
+      {:ok, %Role{}} ->
+        conn
+        |> put_flash(:info, "Deleted role")
+        |> redirect(to: admin_role_path(conn, :index))
+      {:error, %Ecto.Changeset{}} ->
+        conn
+        |> put_flash(:error, "Oops! There were errors on the form.")
+        |> redirect(to: admin_role_path(conn, :index))
+    end
+  end
 end

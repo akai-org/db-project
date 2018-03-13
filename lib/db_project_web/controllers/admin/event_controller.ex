@@ -20,7 +20,7 @@ defmodule DbProjectWeb.Admin.EventController do
   def create(conn, %{"event" => event_params}) do
     case Events.create_event(event_params) do
       {:ok, %Event{} = event} ->
-        conn
+        conn 
         |> put_flash(:info, "Created event")
         |> redirect(to: admin_event_path(conn, :show, event.id))
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -52,6 +52,20 @@ defmodule DbProjectWeb.Admin.EventController do
         conn
         |> put_flash(:error, "Oops! There were errors on the form.")
         |> render("edit.html", event: event, changeset: changeset)
+    end
+  end
+
+  def delete(conn, %{"id" => id}) do
+    event = Events.get_event!(id)
+    case Events.delete_event(event) do
+      {:ok, %Event{} = event} -> 
+        conn
+        |> put_flash(:info, "Deleted event: #{event.name}")
+        |> redirect(to: admin_event_path(conn, :index))
+      {:error, %Ecto.Changeset{}} ->
+        conn
+        |> put_flash(:error, "Oops! Couldn't delete the event.")
+        |> redirect(to: admin_event_path(conn, :index))
     end
   end
 end

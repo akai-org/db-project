@@ -8,7 +8,7 @@ defmodule DbProjectWeb.Admin.UserController do
   alias DbProject.Repo
 
   plug DbProjectWeb.RequireLogin
-  plug DbProjectWeb.RequireRole, role: :role_admin
+  plug DbProjectWeb.RequireRole, role: :user_admin
 
   def index(conn, _params) do
     users = Accounts.list_users()

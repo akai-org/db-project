@@ -1,8 +1,11 @@
+<%= link("New role", to: admin_role_path(@conn, :new), class: "btn btn-primary") %>
+
 <table class="table">
   <thead>
     <tr>
       <th>Nazwa</th>
       <th>Atom</th>
+      <th>Delete</th>
     </tr>
   </thead>
   <tbody>
@@ -10,6 +13,8 @@
       <tr>
         <td><%= role.name %></td>
         <td><%= role.atom %></td>
+        <td><%= link("Delete", to: admin_role_path(@conn, :delete, role.id),
+          method: :delete) %></td>
       </tr>
     <% end %>
   </tbody>
