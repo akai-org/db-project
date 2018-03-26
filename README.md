@@ -1,5 +1,18 @@
 # DbProject
 
+DbProject - is small CMS which will deliver content to apps made by AKAI. 
+
+- Content (currently informations about events organized by AKAI) is shared by JSON API. 
+- Access to admin panel is provided via email in AKAI's domain. 
+- Each AKAI member has roles which define what he/she can do. 
+
+Current endpoints for API:
+
+```
+https://dbproject.dolata.me/api/events[?page=n&page_size=m]
+https://dbproject.dolata.me/api/events/:id
+```
+
 ## Installation
 
 * Install [Erlang](http://www.erlang.org/downloads) and then [Elixir](https://elixir-lang.org/install.html).
