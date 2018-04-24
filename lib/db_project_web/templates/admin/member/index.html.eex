@@ -1,0 +1,25 @@
+<%= link("New member", to: admin_member_path(@conn, :new), class: "btn btn-primary") %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Imię</th>
+      <th>Nazwisko</th>
+      <th>Github</th>
+      <th>Edytuj</th>
+      <th>Usuń</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for member <- @members do %>
+      <tr>
+        <td><%= member.name %></td>
+        <td><%= member.surname %></td>
+        <td><%= link("Github", to: member.github) %></td>
+        <td><%= link("Edit", to: admin_member_path(@conn, :edit, member.id)) %></td>
+        <td><%= link("Delete", to: admin_member_path(@conn, :delete, member.id), method: :delete) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>
+<%= pagination_links @members %>

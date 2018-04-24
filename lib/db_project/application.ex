@@ -16,7 +16,9 @@ defmodule DbProject.Application do
       # Start your own worker by calling: DbProject.Worker.start_link(arg1, arg2, arg3)
       # worker(DbProject.Worker, [arg1, arg2, arg3]),
       worker(Cachex, [:events_lists_cache, [limit: limit]], id: :cachex_events_lists),
-      worker(Cachex, [:events_units_cache, [limit: limit]], id: :cachex_events_units)
+      worker(Cachex, [:events_units_cache, [limit: limit]], id: :cachex_events_units),
+      worker(Cachex, [:members_lists_cache, [limit: limit]], id: :cachex_members_lists),
+      worker(Cachex, [:members_units_cache, [limit: limit]], id: :cachex_members_units)
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

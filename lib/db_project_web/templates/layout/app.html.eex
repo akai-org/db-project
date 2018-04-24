@@ -16,7 +16,7 @@
       <header class="header">
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
-            <%= if has_role?(@conn, :user_admin) do %> 
+            <%= if has_role?(@conn, :user_admin) do %>
               <li>
                 <%= link("Users", to: admin_user_path(@conn, :index), class: "btn btn-primary") %>
               </li>
@@ -24,16 +24,21 @@
                 <%= link("Roles", to: admin_role_path(@conn, :index), class: "btn btn-primary") %>
               </li>
             <%= end %>
-            <%= if has_role?(@conn, :event_admin) do %> 
+            <%= if has_role?(@conn, :event_admin) do %>
               <li>
                 <%= link("Events", to: admin_event_path(@conn, :index), class: "btn btn-primary") %>
               </li>
             <%= end %>
+            <%= if has_role?(@conn, :member_admin) do %>
+              <li>
+                <%= link("Members", to: admin_member_path(@conn, :index), class: "btn btn-primary") %>
+              </li>
+            <%= end %>
             <li>
-              <%= if is_logged?(@conn) do 
+              <%= if is_logged?(@conn) do
                 link("Logout", to: auth_path(@conn, :logout), method: :delete, class: "btn btn-danger")
               else
-                link("Login", to: auth_path(@conn, :login), method: :post, class: "btn btn-primary")  
+                link("Login", to: auth_path(@conn, :login), method: :post, class: "btn btn-primary")
               end %>
             </li>
           </ul>

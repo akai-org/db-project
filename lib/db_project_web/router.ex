@@ -43,5 +43,6 @@ defmodule DbProjectWeb.Router do
     resources "/events", Admin.EventController
     resources "/roles", Admin.RoleController, only: [:index, :create, :new, :delete]
     resources "/user", Admin.UserController, only: [:index, :edit, :update]
+    resources "/member", Admin.MemberController, only: [:index, :create, :new, :edit, :update, :delete]
   end
 end
