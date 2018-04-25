@@ -25,6 +25,7 @@ defmodule DbProjectWeb.Router do
     pipe_through :api
 
     resources "/events", EventController, only: [:index, :show]
+    resources "/members", MemberController, only: [:index]
   end
 
   scope "/auth", DbProjectWeb do
