@@ -1,8 +1,8 @@
-defmodule DbProject.Repo.Migrations.CreateMembers do
+defmodule DbProject.Repo.Migrations.CreateFormerMembers do
   use Ecto.Migration
 
   def change do
-    create table(:members) do
+    create table(:former_members) do
       add :name, :string
       add :surname, :string
       add :github, :string

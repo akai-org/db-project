@@ -1,10 +1,10 @@
-defmodule DbProject.Members.Member do
+defmodule DbProject.FormerMembers.FormerMember do
   use Ecto.Schema
   import Ecto.Changeset
-  alias DbProject.Members.Member
+  alias DbProject.FormerMembers.FormerMember
 
   @timestamps_opts [type: Ecto.DateTime, usec: false]
-  schema "members" do
+  schema "former_members" do
     field :github, :string
     field :name, :string
     field :surname, :string
@@ -13,8 +13,8 @@ defmodule DbProject.Members.Member do
   end
 
   @doc false
-  def changeset(%Member{} = member, attrs) do
-    member
+  def changeset(%FormerMember{} = former_member, attrs) do
+    former_member
     |> cast(attrs, [:name, :surname, :github])
     |> validate_required([:name, :surname])
   end

@@ -1,0 +1,25 @@
+<%= link("New former_member", to: admin_former_member_path(@conn, :new), class: "btn btn-primary") %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Imię</th>
+      <th>Nazwisko</th>
+      <th>Github</th>
+      <th>Edytuj</th>
+      <th>Usuń</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for former_member <- @former_members do %>
+      <tr>
+        <td><%= former_member.name %></td>
+        <td><%= former_member.surname %></td>
+        <td><%= link("Github", to: former_member.github) %></td>
+        <td><%= link("Edit", to: admin_former_member_path(@conn, :edit, former_member.id)) %></td>
+        <td><%= link("Delete", to: admin_former_member_path(@conn, :delete, former_member.id), method: :delete) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>
+<!--<%= pagination_links @former_members %> problemy z bazą -->

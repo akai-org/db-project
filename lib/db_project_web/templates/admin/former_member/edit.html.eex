@@ -1,4 +1,4 @@
-<%= form_for @changeset, admin_member_path(@conn, :update, @member.id),
+<%= form_for @changeset, admin_former_member_path(@conn, :update, @former_member.id),
   [class: "form-group"], fn f -> %>
   <div class="form-group">
     <label>Imię</label>

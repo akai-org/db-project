@@ -29,9 +29,9 @@
                 <%= link("Events", to: admin_event_path(@conn, :index), class: "btn btn-primary") %>
               </li>
             <%= end %>
-            <%= if has_role?(@conn, :member_admin) do %>
+            <%= if has_role?(@conn, :former_member_admin) do %>
               <li>
-                <%= link("Members", to: admin_member_path(@conn, :index), class: "btn btn-primary") %>
+                <%= link("Former Members", to: admin_former_member_path(@conn, :index), class: "btn btn-primary") %>
               </li>
             <%= end %>
             <li>
