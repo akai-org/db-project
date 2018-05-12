@@ -1,7 +1,7 @@
 defmodule DbProjectWeb.Admin.FormerMemberController do
   use DbProjectWeb, :controller
 
-  alias DbProject.FormerMembers #czemu tak aliasujemy, a nie DbProject.Members.Members
+  alias DbProject.FormerMembers
   alias DbProject.FormerMembers.FormerMember
 
   plug DbProjectWeb.RequireLogin

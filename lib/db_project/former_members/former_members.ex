@@ -9,11 +9,11 @@ defmodule DbProject.FormerMembers do
   alias DbProject.FormerMembers.FormerMember
 
   @doc """
-  Returns the list of members.
+  Returns the list of former_members.
 
   ## Examples
 
-      iex> list_members()
+      iex> list_former_members()
       [%Member{}, ...]
 
   """
@@ -35,16 +35,16 @@ defmodule DbProject.FormerMembers do
   end
 
   @doc """
-  Gets a single member.
+  Gets a single former_member.
 
   Raises `Ecto.NoResultsError` if the Member does not exist.
 
   ## Examples
 
-      iex> get_member!(123)
+      iex> get_former_member!(123)
       %Member{}
 
-      iex> get_member!(456)
+      iex> get_former_member!(456)
       ** (Ecto.NoResultsError)
 
   """
@@ -56,14 +56,14 @@ defmodule DbProject.FormerMembers do
   end
 
   @doc """
-  Creates a member.
+  Creates a former_member.
 
   ## Examples
 
-      iex> create_member(%{field: value})
+      iex> create_former_member(%{field: value})
       {:ok, %Member{}}
 
-      iex> create_member(%{field: bad_value})
+      iex> create_former_member(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
@@ -83,14 +83,14 @@ defmodule DbProject.FormerMembers do
   end
 
   @doc """
-  Updates a member.
+  Updates a former_member.
 
   ## Examples
 
-      iex> update_member(member, %{field: new_value})
+      iex> update_former_member(former_member, %{field: new_value})
       {:ok, %Member{}}
 
-      iex> update_member(member, %{field: bad_value})
+      iex> update_former_member(former_member, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
