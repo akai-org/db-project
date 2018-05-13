@@ -25,6 +25,7 @@ defmodule DbProjectWeb.Router do
     pipe_through :api
 
     resources "/events", EventController, only: [:index, :show]
+    resources "/former_members", FormerMemberController, only: [:index]
   end
 
   scope "/auth", DbProjectWeb do
@@ -43,5 +44,6 @@ defmodule DbProjectWeb.Router do
     resources "/events", Admin.EventController
     resources "/roles", Admin.RoleController, only: [:index, :create, :new, :delete]
     resources "/user", Admin.UserController, only: [:index, :edit, :update]
+    resources "/former_member", Admin.FormerMemberController, only: [:index, :create, :new, :edit, :update, :delete]
   end
 end

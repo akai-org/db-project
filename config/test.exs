@@ -13,7 +13,7 @@ config :logger, level: :warn
 config :db_project, DbProject.Repo,
   adapter: Ecto.Adapters.MySQL,
   username: "root",
-  password: "",
+  password: "password",
   database: "db_project_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
