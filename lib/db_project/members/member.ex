@@ -2,6 +2,7 @@ defmodule DbProject.Members.Member do
   use Ecto.Schema
   import Ecto.Changeset
   alias DbProject.Members.Member
+  alias DbProject.Accounts.User
 
 
   schema "members" do
@@ -9,6 +10,7 @@ defmodule DbProject.Members.Member do
     field :name, :string
     field :surname, :string
 
+    has_one :user
     timestamps()
   end
 

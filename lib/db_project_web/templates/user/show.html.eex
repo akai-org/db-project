@@ -1,0 +1,3 @@
+<%= @member.name %> </br>
+<%= @member.surname %> </br>
+<% @member.github %> </br>
