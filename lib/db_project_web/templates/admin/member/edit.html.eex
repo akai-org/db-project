@@ -1,0 +1,5 @@
+<h2>Edit Member</h2>
+
+<%= render "form.html", Map.put(assigns, :action, admin_member_path(@conn, :update, @member)) %>
+
+<span><%= link "Back", to: admin_member_path(@conn, :index) %></span>
