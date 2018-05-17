@@ -1,4 +1,6 @@
 <%= @member.name %> </br>
 <%= @member.surname %> </br>
 <%= @member.github %> </br>
-<%= link "Edytuj profil", to: user_path(@conn, :edit) %>
+<%= @member.user_id %> </br>
+<%= link "Edytuj profil", to: user_path(@conn, :edit) %></br>
+<%= link "Usuń profil", to: user_path(@conn, :delete), method: :delete %>

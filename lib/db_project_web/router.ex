@@ -26,6 +26,7 @@ defmodule DbProjectWeb.Router do
     get "/edit", UserController, :edit
     patch "/update", UserController, :update
     put "/update", UserController, :update
+    delete "/delete", UserController, :delete
   end
 
   # Other scopes may use custom stacks.

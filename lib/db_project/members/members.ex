@@ -46,7 +46,16 @@ defmodule DbProject.Members do
       where: ^current_user.id == u.id and
         m.user_id == u.id
     member = Repo.all(query)
-    List.first(member)
+    case member do
+      [%Member{}] ->
+        List.first(member)
+      [] ->
+        new = create_member(%{user_id: current_user.id, name: "name", surname: "surname", github: "github"})
+        case new do
+          {:ok, struct} -> struct
+          {:error, changeset} -> %Member{name: "error", surname: "error", github: "error"}
+        end
+    end
   end
 
   @doc """

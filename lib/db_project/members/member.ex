@@ -17,7 +17,7 @@ defmodule DbProject.Members.Member do
   @doc false
   def changeset(%Member{} = member, attrs) do
     member
-    |> cast(attrs, [:name, :surname, :github])
-    |> validate_required([:name, :surname, :github])
+    |> cast(attrs, [:name, :surname, :github, :user_id])
+    |> validate_required([:name, :surname, :github, :user_id])
   end
 end

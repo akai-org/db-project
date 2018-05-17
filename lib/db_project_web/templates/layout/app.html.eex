@@ -36,7 +36,7 @@
             <%= end %>
             <li>
               <%= if is_logged?(@conn) do
-                link("Edit profile", to: user_path(@conn, :edit), class: "btn btn-primary")
+                link("Profile", to: user_path(@conn, :show), class: "btn btn-primary")
               end%>
           </li>
             <li>

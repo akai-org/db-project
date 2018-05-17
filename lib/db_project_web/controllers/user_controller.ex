@@ -31,4 +31,13 @@ defmodule DbProjectWeb.UserController do
         render(conn, "edit.html", member: member, changeset: changeset)
     end
   end
+
+  def delete(conn, _params) do
+    member = Members.get_member_by_user(conn.assigns.current_user)
+    {:ok, _member} = Members.delete_member(member)
+
+    conn
+    |> put_flash(:info, "Member deleted successfully.")
+    |> redirect(to: page_path(conn, :index))
+  end
 end
