@@ -14,5 +14,5 @@ Code.load_file("seeds_events.exs", __DIR__)
 Code.load_file("seeds_members.exs", __DIR__)
 
 DbProject.Repo.insert!(%DbProject.Accounts.Role{name: "Event admin", atom: "event_admin"})
-DbProject.Repo.insert!(%DbProject.Accounts.User{name: "Michał Dolata", email: "michal.dolata@akai.org.pl", roles: [%DbProject.Accounts.Role{name: "User admin", atom: "user_admin"}]})
-DbProject.Repo.insert!(%DbProject.Accounts.User{name: "Michał Dziardziel", email: "michal.dziardziel@akai.org.pl", roles: [%DbProject.Accounts.Role{name: "Former Member admin", atom: "former_member_admin"}]})
+DbProject.Repo.insert!(%DbProject.Accounts.User{id: 1, name: "Michał Dolata", email: "michal.dolata@akai.org.pl", roles: [%DbProject.Accounts.Role{name: "User admin", atom: "user_admin"}]})
+DbProject.Repo.insert!(%DbProject.Accounts.User{id: 2, name: "Michał Dziardziel", email: "michal.dziardziel@akai.org.pl", roles: [%DbProject.Accounts.Role{name: "Former Member admin", atom: "former_member_admin"}]})

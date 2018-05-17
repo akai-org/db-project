@@ -7,6 +7,7 @@ defmodule DbProject.Members do
   alias DbProject.Repo
 
   alias DbProject.Members.Member
+  alias DbProject.Accounts.User
 
   @doc """
   Returns the list of members.
@@ -36,6 +37,17 @@ defmodule DbProject.Members do
 
   """
   def get_member!(id), do: Repo.get!(Member, id)
+
+
+
+  def get_member_by_user(current_user) do
+    query = from m in Member,
+      join: u in User,
+      where: ^current_user.id == u.id and
+        m.user_id == u.id
+    member = Repo.all(query)
+    List.first(member)
+  end
 
   @doc """
   Creates a member.

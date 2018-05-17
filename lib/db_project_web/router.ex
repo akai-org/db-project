@@ -18,7 +18,14 @@ defmodule DbProjectWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/user", UserController, as: :user, only: [:edit, :update, :show]
+  end
+
+  scope "/user", DbProjectWeb do
+    pipe_through :browser
+    get "/show", UserController, :show
+    get "/edit", UserController, :edit
+    patch "/update", UserController, :update
+    put "/update", UserController, :update
   end
 
   # Other scopes may use custom stacks.

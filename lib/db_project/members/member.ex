@@ -10,7 +10,7 @@ defmodule DbProject.Members.Member do
     field :name, :string
     field :surname, :string
 
-    has_one :user
+    belongs_to :user, User
     timestamps()
   end
 

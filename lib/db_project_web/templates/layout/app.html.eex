@@ -36,6 +36,11 @@
             <%= end %>
             <li>
               <%= if is_logged?(@conn) do
+                link("Edit profile", to: user_path(@conn, :edit), class: "btn btn-primary")
+              end%>
+          </li>
+            <li>
+              <%= if is_logged?(@conn) do
                 link("Logout", to: auth_path(@conn, :logout), method: :delete, class: "btn btn-danger")
               else
                 link("Login", to: auth_path(@conn, :login), method: :post, class: "btn btn-primary")

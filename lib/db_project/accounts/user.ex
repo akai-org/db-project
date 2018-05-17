@@ -10,7 +10,7 @@ defmodule DbProject.Accounts.User do
     field :name, :string
 
     many_to_many :roles, Role, join_through: "accounts_permissions", on_replace: :delete
-    belongs_to :member  
+    has_one :member, Member
     timestamps()
   end
 
